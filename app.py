@@ -87,7 +87,7 @@ def edit(plant_id):
     if request.method == 'POST':
         # TODO: Make an `update_one` database call to update the plant with the
         # given id. Make sure to put the updated fields in the `$set` object.
-
+ 
         
         return redirect(url_for('detail', plant_id=plant_id))
     else:
