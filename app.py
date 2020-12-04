@@ -45,7 +45,7 @@ def create():
             'date_planted': request.form.get('date_planted')
         }
         returned_obj = plants_collection.insert_one(new_plant)
-
+        # {'_id': ObjectId('5fc82959f7e05cf1fe55d433'), 'name': 'Cranberry', 'variety': 'Fruit', 'photo_url': '', 'date_planted': '2020-12-01'}
         return redirect(url_for('detail', plant_id=returned_obj.inserted_id))
 
     else:
