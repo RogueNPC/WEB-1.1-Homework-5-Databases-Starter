@@ -32,11 +32,13 @@ def plants_list():
 @app.route('/about')
 def about():
     """Display the about page."""
+
     return render_template('about.html')
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     """Display the plant creation page & process data from the creation form."""
+
     if request.method == 'POST':
         new_plant = {
             'name': request.form.get('plant_name'),
@@ -84,9 +86,8 @@ def harvest(plant_id):
 @app.route('/edit/<plant_id>', methods=['GET', 'POST'])
 def edit(plant_id):
     """Shows the edit page and accepts a POST request with edited data."""
+
     if request.method == 'POST':
-        # TODO: Make an `update_one` database call to update the plant with the
-        # given id. Make sure to put the updated fields in the `$set` object.
         plants_collection.update_one({'_id': ObjectId(plant_id)},{'$set': {
             'name': request.form.get('plant_name'),
             'variety': request.form.get('variety'),
@@ -96,8 +97,6 @@ def edit(plant_id):
         
         return redirect(url_for('detail', plant_id=plant_id))
     else:
-        # TODO: Make a `find_one` database call to get the plant object with the
-        # passed-in _id.
         plant_to_show = plants_collection.find_one({'_id': ObjectId(plant_id)})
 
         context = {
@@ -108,11 +107,11 @@ def edit(plant_id):
 
 @app.route('/delete/<plant_id>', methods=['POST'])
 def delete(plant_id):
-    # TODO: Make a `delete_one` database call to delete the plant with the given
-    # id.
+    """Deletes plant and all harvest info of deleted plant"""
 
-    # TODO: Also, make a `delete_many` database call to delete all harvests with
-    # the given plant id.
+    plants_collection.delete_one({'_id': ObjectId(plant_id)})
+
+    harvests_collection.delete_many({'_id': ObjectId(plant_id)})
 
     return redirect(url_for('plants_list'))
 
