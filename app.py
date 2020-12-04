@@ -45,7 +45,7 @@ def create():
             'date_planted': request.form.get('date_planted')
         }
         returned_obj = plants_collection.insert_one(new_plant)
-        # {'_id': ObjectId('5fc82959f7e05cf1fe55d433'), 'name': 'Cranberry', 'variety': 'Fruit', 'photo_url': '', 'date_planted': '2020-12-01'}
+
         return redirect(url_for('detail', plant_id=returned_obj.inserted_id))
 
     else:
@@ -57,10 +57,6 @@ def detail(plant_id):
 
     plant_to_show = plants_collection.find_one({'_id': ObjectId(plant_id)})
 
-    # TODO: Use the `find` database operation to find all harvests for the
-    # plant's id.
-    # HINT: This query should be on the `harvests` collection, not the `plants`
-    # collection.
     harvests = harvests_collection.find({'_id': ObjectId(plant_id)})
 
     context = {
@@ -75,18 +71,15 @@ def harvest(plant_id):
     Accepts a POST request with data for 1 harvest and inserts into database.
     """
 
-    # TODO: Create a new harvest object by passing in the form data from the
-    # detail page form.
     new_harvest = {
-        'quantity': '', # e.g. '3 tomatoes'
-        'date': '',
+        'quantity': request.form.get('harvested_amount'), # e.g. '3 tomatoes'
+        'date': request.form.get('date_planted'),
         'plant_id': plant_id
     }
 
-    # TODO: Make an `insert_one` database call to insert the object into the 
-    # `harvests` collection of the database.
+    returned_harvest = harvests_collection.insert_one(new_harvest)
 
-    return redirect(url_for('detail', plant_id=plant_id))
+    return redirect(url_for('detail', plant_id=returned_harvest.inserted_id))
 
 @app.route('/edit/<plant_id>', methods=['GET', 'POST'])
 def edit(plant_id):
