@@ -72,14 +72,14 @@ def harvest(plant_id):
     """
 
     new_harvest = {
-        'quantity': request.form.get('harvested_amount'), # e.g. '3 tomatoes'
+        'quantity': request.form.get('harvested_amount'),
         'date': request.form.get('date_planted'),
         'plant_id': plant_id
     }
 
-    returned_harvest = harvests_collection.insert_one(new_harvest)
+    harvests_collection.insert_one(new_harvest)
 
-    return redirect(url_for('detail', plant_id=returned_harvest.inserted_id))
+    return redirect(url_for('detail', plant_id=plant_id))
 
 @app.route('/edit/<plant_id>', methods=['GET', 'POST'])
 def edit(plant_id):
