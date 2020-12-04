@@ -47,7 +47,7 @@
         <h3>Harvest History</h3>
         <ul>
             {% for harvest in harvests %}
-            <li>{{ harvest }}</li>
+            <li>{{ harvest['date'] }}: Harvested {{ harvest['quantity'] }}</li>
             {% endfor %}
         </ul>
     </section>
