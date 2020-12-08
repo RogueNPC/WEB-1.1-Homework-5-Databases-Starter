@@ -20,14 +20,14 @@ MONGODB_DBNAME = 'mydb'
 
 app = Flask(__name__)
 
-client = pymongo.MongoClient("mongodb+srv://Watermelonthe3rd:tansay77@first-cluster.yoles.mongodb.net/<dbname>?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@first-cluster.yoles.mongodb.net/<dbname>?retryWrites=true&w=majority")
 db = client[MONGODB_DBNAME]
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/plantsDatabase"
-mongo = PyMongo(app)
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/plantsDatabase"
+# mongo = PyMongo(app)
 
-plants_collection = mongo.db.plants
-harvests_collection = mongo.db.harvests
+plants_collection = db.plants
+harvests_collection = db.harvests
 
 ############################################################
 # ROUTES
@@ -94,7 +94,7 @@ def harvest(plant_id):
         'plant_id': plant_id
     }
 
-    insert_results = harvests_collection.insert_one(new_harvest)
+    harvests_collection.insert_one(new_harvest)
 
     return redirect(url_for('detail', plant_id=plant_id))
 
